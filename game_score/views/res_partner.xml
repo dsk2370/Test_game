@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="game_score_player_inherit" model="ir.ui.view"> 
+        <field name="name">res.partner.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='toggle_active']" position="before">
+                <button name="show_games" type="object" class="oe_stat_button" icon="fa-info">
+                        <field name="game_count" /> games
+                </button>
+                <button name="show_wins" type="object" class="oe_stat_button" icon="fa-info">
+                        <field name="win_count"/> Wins
+                </button>
+                <button name="show_loses" type="object" class="oe_stat_button" icon="fa-info">
+                        <field name="lose_count" /> Loses
+                </button>
+
+            </xpath>
+            <xpath expr="//page[@name='sales_purchases']" position="before">
+                <page name="stats" string="Game Statistics">
+                    <group name="container_row_2">
+                        <group >
+                            <field name="game_count"/>
+                            <field name="win_count"/>
+                            <field name="lose_count"/>
+                            <field name="avg_game_dur" widget="float_time"/>
+                            
+                        </group>
+                        
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_game_score_graph">
+    <field name="name">res.partner.graph</field>
+    <field name="model">res.partner</field>
+    <field name="type">graph</field>
+    <field name="arch" type="xml">
+            <graph string="Players">
+                <field name="country_id" group="True"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_game_score_players" model="ir.actions.act_window">
+            <field name="name">Players</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form,graph</field>
+            <field name="domain">[]</field>
+    </record>
+
+
+</odoo>

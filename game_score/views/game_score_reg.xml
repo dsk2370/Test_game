@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="view_game_score_reg_form" model="ir.ui.view">
+            <field name="name">game.score.reg.form</field>
+            <field name="model">game.score.reg</field>
+            <field name="arch" type="xml">
+                <form string="Register Result">
+                    <sheet>    
+                        <group>
+                            <field name="game_result" required="1"/>
+                            <field name="end" required="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string='Validate' name="action_validate_game_score" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_game_score_reg" model="ir.actions.act_window">
+            <field name="name">Register Result</field>
+            <field name="res_model">game.score.reg</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_game_score_reg_form"/>
+            <field name="target">new</field>
+        </record>
+
+</odoo>

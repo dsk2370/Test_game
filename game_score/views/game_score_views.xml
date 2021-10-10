@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+      
+        <record model="ir.ui.view" id="view_game_score_tree">
+            <field name="name">game.score.tree</field>
+            <field name="model">game.score</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Game Sessions" >
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="partner_id" string="Player"/>
+                    <field name="start"/>
+                    <field name="end"/>
+                    <field name="game_size_id"/>
+                    <field name="game_result" />
+                    <field name="duration" />
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_game_score_form">
+            <field name="name">game.score.form</field>
+            <field name="model">game.score</field>
+            <field name="arch" type="xml">
+                <form string="Game Session">
+                <header>
+                    <button name="start_game" string="Start Game" states="draft" class="oe_highlight" type="object" groups="game_score.group_game_score_user" />
+                    <button name="cancel_game" string="Cancel" type="object" states="inprogress" groups="game_score.group_game_score_user" confirm="Are you sure you want to cancel this Game?"/>
+                    <button name="action_game_score" type="object" states="inprogress" string="Finish Game" groups="game_score.group_game_score_user" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,inprogress,finish,cancel" groups="game_score.group_game_score_user"/>
+                </header>
+                <sheet string="Game Session">
+                    <label for="name" string="Game Session"/>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="date" />
+                            <field name="game_size_id" />                        
+                        </group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Duration">
+                             <group>
+                                <field name="start" />
+                                <field name="end" />
+                                <field name="duration" widget="float_time"/>
+                            </group>
+                        </page>
+                        <page string="Result" >
+                            <group>
+                                <field name="game_result"/>
+                            </group>
+                        </page>
+                        <group>
+                         <field name="narration" placeholder="Description" nolabel="1"/>
+                        </group>
+                    </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="game_score_kanban_view" model="ir.ui.view">            
+        <field name="name">game.score.kanban</field>            
+        <field name="model">game.score</field>            
+        <field name="arch" type="xml">                
+        <kanban class="o_res_partner_kanban">                    
+            <field name="date"/>                    
+            <field name="name"/>	        
+            <field name="partner_id"/>                    
+            <field name="game_size_id"/>     
+            <field name="game_result"/>                    
+            <field name="duration"/>                    
+            <templates>                        
+                <t t-name="kanban-box">                            
+                    <div t-attf-class="oe_kanban_global_click  o_kanban_record_has_image_fill o_res_partner_kanban">                                
+                                               
+                            
+                            <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_medium', record.partner_id.raw_value)}')">
+                                
+                            </div>
+                    
+
+
+                             <div class="oe_kanban_details">                                 
+                            <strong class="o_kanban_record_title oe_partner_heading" >                                    
+                                <field name="name"/>                                    
+                            </strong>
+                            <ul>      
+                                <li>                          
+                                    <div t-if="record.partner_id.value">                                        
+                                        <t t-esc="record.partner_id.value"/>                                
+                                    </div>   
+                                </li>   
+                                <li>                              
+                                    <div t-if="record.game_size_id.value">                                        
+                                        <t t-esc="record.game_size_id.value"/>                                
+                                    </div>
+                                </li>         
+                                <li>                       
+                                    <div t-if="record.game_result.value">                                        
+                                        <t t-esc="record.game_result.value"/>                                
+                                    </div>   
+                                </li>
+                            </ul>
+                        </div>                        
+                    </div>                        
+                </t>                    
+            </templates>                
+        </kanban>            
+        </field>        
+        </record>
+    
+    <record id="view_player_search" model="ir.ui.view">                                
+        <field name="name">game.score.search.player</field>                                
+        <field name="model">game.score</field>                                
+        <field name="arch" type="xml">                                    
+            <search string="Search Players">                                        
+            <field name="name"></field>                                        
+            <filter string="Won" domain="[('game_result', '=', 'won')]" name="Won Games"></filter>                                        
+            <filter string="Lost" domain="[('game_result', '=', 'lost')]" name="Lost Games"></filter> 
+            <group expand="0" string="Group By">                                            
+                <filter string="Player" name="partner_id" context="{'group_by': 'partner_id'}"></filter>                                            
+                <filter string="Result" name="game_result" context="{'group_by': 'game_result'}"></filter>                                            
+                <filter string="Field Size" name="game_size_id" context="{'group_by': 'game_size_id'}"></filter>                                        
+            </group>                                    
+            </search>                                
+        </field>                            
+    </record>
+
+        <record id="view_pivot_game_score" model="ir.ui.view">  
+        <field name="name">pivot</field>  
+        <field name="model">game.score</field>  
+        <field name="arch" type="xml">      
+            <pivot string="Pivot View">           
+                <field name="name" type="row"/>    
+                <field name="partner_id"  type="row"/>  
+            </pivot>   
+        </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_game_score_graph">
+            <field name="name">game.score.graph</field>
+            <field name="model">game.score</field>
+            <field name="type">graph</field>
+            <field name="arch" type="xml">
+                    <graph string="Game Results">
+                        <field name="game_result" group="True"/>
+                        <!-- <field name="price_unit" operator="*"/> -->
+                    </graph>
+                </field>
+        </record>
+
+        <record id="action_game_score_receipt" model="ir.actions.act_window">
+            <field name="name">Game Session</field>
+            <field name="res_model">game.score</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form,pivot,graph</field>
+            <field name="domain">[]</field>
+            
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Register a new Game Session
+              </p>
+            </field>
+        </record>
+        
+
+        
+        <menuitem id="menu_game_score_main" name="Game Session" sequence="10"/>
+        <menuitem id="menu_action_game_score_sub" name="Games"
+            action="action_game_score_receipt" parent="menu_game_score_main" sequence="10"/>
+        <menuitem id="menu_action_game_score_sub_players" name="Players"
+            action="action_game_score_players" parent="menu_game_score_main" sequence="11"/>
+
+        
+</odoo>

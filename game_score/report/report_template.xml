@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_game_score_document">
+    <t t-call="web.external_layout">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        
+        <div class="page">
+            <div class="oe_structure"/>
+
+            <h2 t-if="o.state == 'draft'">Draft Game Report #<span t-field="o.name"/></h2>
+            <h2 t-if="o.state in ['finish','inprogress']">Game Report #<span t-field="o.name"/></h2>
+            <h2 t-if="o.state == 'cancel'">Cancelled Game Report #<span t-field="o.name"/></h2>
+
+            <div id="informations" class="row mt32 mb32">
+                 <div t-if="o.date" class="col-3 bm-2">
+                    <strong>Date:</strong>
+                    <p t-field="o.date" class="m-0"/>
+                </div>
+
+                <div t-if="o.game_size_id" class="col-3 bm-2">
+                    <strong>Game Size:</strong>
+                    <p t-field="o.game_size_id.name" class="m-0"/>
+                </div>
+                
+               
+
+                <div t-if="o.partner_id" class="col-3 bm-2">
+                    <strong>Player:</strong>
+                    <p t-field="o.partner_id.name" class="m-0"/>
+                </div>
+            </div>
+
+            <table class="table table-sm o_main_table">
+                <thead>
+                    <tr>
+                        <th><strong>Start Time</strong></th>
+                        <th><strong>End Time</strong></th>
+                       
+                        <th ><strong>Duration (mins)</strong></th>
+                        <th ><strong>Result</strong></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                        <td>
+                            <span t-esc="o.start"/>
+                        </td>
+                        <td>
+                            <span t-esc="o.end"/>
+                        </td>
+                         <td>
+                            <span t-esc="round(o.duration * 60,2)"/>
+                        </td>
+                         <td>
+                            <span t-esc="o.game_result"/>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+
+            
+            <p t-field="o.narration"/>
+            <div class="oe_structure"/>
+        </div>
+    </t>
+</template>
+
+<template id="report_game_score">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="game_score.report_game_score_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

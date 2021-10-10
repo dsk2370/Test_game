@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            string="Game Report" 
+            id="action_report_game_score_report" 
+            model="game.score" 
+            report_type="qweb-pdf"
+            name="game_score.report_game_score" 
+            file="game_score.report_game_score"
+            print_report_name="
+                (object.state in ('draft') and 'Draft GR - %s' % (object.name) or
+                'GR %s' % (object.name))"
+        />
+
+        
+    </data>
+</odoo>
