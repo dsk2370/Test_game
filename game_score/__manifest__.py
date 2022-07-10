@@ -5,7 +5,7 @@
     'version' : '12.0',
     'summary': 'Manage Score and Game data.',
     'description': """
-        Manage Score and Game data with add 1.
+        Manage Score and Game data with add 3.
     """,
     'category': 'Other',
     'sequence': 20,

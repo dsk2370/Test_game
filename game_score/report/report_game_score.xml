@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <report 
-            string="Game Report" 
+            string="Games Report" 
             id="action_report_game_score_report" 
             model="game.score" 
             report_type="qweb-pdf"
