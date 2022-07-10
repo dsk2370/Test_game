@@ -6,7 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, timedelta
 class GameSizeModel(models.Model):
     _name = 'game.size'
-    _description = 'Game size'
+    _description = 'Game size Model'
 
     x_size = fields.Integer("X-size",required=True)
     y_size = fields.Integer("Y-size",required=True)
