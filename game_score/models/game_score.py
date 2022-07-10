@@ -4,7 +4,7 @@ from odoo import fields, models, api, _
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, timedelta
-class GameSize(models.Model):
+class GameSizeModel(models.Model):
     _name = 'game.size'
     _description = 'Game size'
 
